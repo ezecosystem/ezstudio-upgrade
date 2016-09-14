@@ -1,0 +1,28 @@
+parameters:
+    studio_ui.installer.composer.class: EzSystems\EzStudioUpgradeBundle\Bundles\StudioUI\Composer
+    studio_ui.installer.kernel.class: EzSystems\EzStudioUpgradeBundle\Bundles\StudioUI\Kernel
+    studio_ui.installer.routing.class: EzSystems\EzStudioUpgradeBundle\Bundles\StudioUI\Routing
+
+services:
+    studio_ui.installer:
+        class: "%ezstudio_upgrade.bundle.class%"
+        calls:
+            - [ addInstaller, ["@studio_ui.installer.composer"] ]
+            - [ addInstaller, ["@studio_ui.installer.kernel"] ]
+            - [ addInstaller, ["@studio_ui.installer.routing"] ]
+        tags:
+            - { name: ezstudio_upgrade.bundle, bundle: "Studio UI" }
+
+    studio_ui.installer.composer:
+        class: "%studio_ui.installer.composer.class%"
+
+    studio_ui.installer.routing:
+        class: "%studio_ui.installer.routing.class%"
+        arguments:
+            - "@studio_ui.installer.kernel"
+
+    studio_ui.installer.kernel:
+        class: "%studio_ui.installer.kernel.class%"
+        arguments:
+            - "@kernel"
+

@@ -1,0 +1,35 @@
+parameters:
+    landing_page.installer.composer.class: EzSystems\EzStudioUpgradeBundle\Bundles\LandingPage\Composer
+    landing_page.installer.kernel.class: EzSystems\EzStudioUpgradeBundle\Bundles\LandingPage\Kernel
+    landing_page.installer.database.class: EzSystems\EzStudioUpgradeBundle\Bundles\LandingPage\Database
+    landing_page.installer.routing.class: EzSystems\EzStudioUpgradeBundle\Bundles\LandingPage\Routing
+
+services:
+    landing_page.installer:
+        class: "%ezstudio_upgrade.bundle.class%"
+        calls:
+            - [ addInstaller, ["@landing_page.installer.composer"] ]
+            - [ addInstaller, ["@landing_page.installer.kernel"] ]
+            - [ addInstaller, ["@landing_page.installer.database"] ]
+            - [ addInstaller, ["@landing_page.installer.routing"] ]
+        tags:
+            - { name: ezstudio_upgrade.bundle, bundle: "Landing Page" }
+
+    landing_page.installer.composer:
+        class: "%landing_page.installer.composer.class%"
+
+    landing_page.installer.routing:
+        class: "%landing_page.installer.routing.class%"
+        arguments:
+            - "@landing_page.installer.kernel"
+
+    landing_page.installer.kernel:
+        class: "%landing_page.installer.kernel.class%"
+        arguments:
+            - "@kernel"
+
+    landing_page.installer.database:
+        class: "%landing_page.installer.database.class%"
+        arguments:
+            - "@ezpublish.api.storage_engine.legacy.dbhandler"
+            - "@ezpublish.api.service.content_type"

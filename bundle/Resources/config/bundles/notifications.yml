@@ -1,0 +1,34 @@
+parameters:
+    notifications.installer.composer.class: EzSystems\EzStudioUpgradeBundle\Bundles\Notifications\Composer
+    notifications.installer.kernel.class: EzSystems\EzStudioUpgradeBundle\Bundles\Notifications\Kernel
+    notifications.installer.database.class: EzSystems\EzStudioUpgradeBundle\Bundles\Notifications\Database
+    notifications.installer.routing.class: EzSystems\EzStudioUpgradeBundle\Bundles\Notifications\Routing
+
+services:
+    notifications.installer:
+        class: "%ezstudio_upgrade.bundle.class%"
+        calls:
+            - [ addInstaller, ["@notifications.installer.composer"] ]
+            - [ addInstaller, ["@notifications.installer.kernel"] ]
+            - [ addInstaller, ["@notifications.installer.database"] ]
+            - [ addInstaller, ["@notifications.installer.routing"] ]
+        tags:
+            - { name: ezstudio_upgrade.bundle, bundle: "Notifications" }
+
+    notifications.installer.composer:
+        class: "%notifications.installer.composer.class%"
+
+    notifications.installer.routing:
+        class: "%notifications.installer.routing.class%"
+        arguments:
+            - "@notifications.installer.kernel"
+
+    notifications.installer.kernel:
+        class: "%notifications.installer.kernel.class%"
+        arguments:
+            - "@kernel"
+
+    notifications.installer.database:
+        class: "%notifications.installer.database.class%"
+        arguments:
+            - "@ezpublish.api.storage_engine.legacy.dbhandler"

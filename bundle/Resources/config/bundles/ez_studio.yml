@@ -1,0 +1,19 @@
+parameters:
+    ez_studio.installer.repository.class: EzSystems\EzStudioUpgradeBundle\Bundles\EzStudio\Repository
+    ez_studio.installer.credentials.class: EzSystems\EzStudioUpgradeBundle\Bundles\EzStudio\Credentials
+
+services:
+    ez_studio.installer:
+        class: "%ezstudio_upgrade.bundle.class%"
+        calls:
+            - [ addInstaller, ["@ez_studio.installer.repository"] ]
+            - [ addInstaller, ["@ez_studio.installer.credentials"] ]
+        tags:
+            - { name: ezstudio_upgrade.bundle, bundle: "eZ Studio Repository", priority: 100 }
+
+    ez_studio.installer.repository:
+        class: "%ez_studio.installer.repository.class%"
+
+    ez_studio.installer.credentials:
+        class: "%ez_studio.installer.credentials.class%"
+

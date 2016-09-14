@@ -1,0 +1,10 @@
+parameters:
+    ezstudio_upgrade.registry.bundle.class: EzSystems\EzStudioUpgrade\Core\Registry\BundleRegistry
+    ezstudio_upgrade.bundle.class: EzSystems\EzStudioUpgrade\Core\BaseBundle
+
+services:
+    ezstudio_upgrade.bundle:
+        class: '%ezstudio_upgrade.bundle.class%'
+
+    ezstudio_upgrade.registry.bundle:
+        class: '%ezstudio_upgrade.registry.bundle.class%'
